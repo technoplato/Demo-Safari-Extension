@@ -1,9 +1,1 @@
-browser.runtime.sendMessage({ greeting: "hello" }).then((response) => {
-  console.log("Received response: ", response);
-});
-
-browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  console.log("Received request: ", request);
-});
-
-document.body.style.backgroundColor = "purple";
+(()=>{"use strict";const e={randomUUID:"undefined"!=typeof crypto&&crypto.randomUUID&&crypto.randomUUID.bind(crypto)};var o,r=new Uint8Array(16);function n(){if(!o&&!(o="undefined"!=typeof crypto&&crypto.getRandomValues&&crypto.getRandomValues.bind(crypto)))throw new Error("crypto.getRandomValues() not supported. See https://github.com/uuidjs/uuid#getrandomvalues-not-supported");return o(r)}for(var t=[],d=0;d<256;++d)t.push((d+256).toString(16).slice(1));console.log("Safari extension loaded"),console.log("Generated UUID:",function(o,r,d){if(e.randomUUID&&!r&&!o)return e.randomUUID();var s=(o=o||{}).random||(o.rng||n)();if(s[6]=15&s[6]|64,s[8]=63&s[8]|128,r){d=d||0;for(var u=0;u<16;++u)r[d+u]=s[u];return r}return function(e,o=0){return(t[e[o+0]]+t[e[o+1]]+t[e[o+2]]+t[e[o+3]]+"-"+t[e[o+4]]+t[e[o+5]]+"-"+t[e[o+6]]+t[e[o+7]]+"-"+t[e[o+8]]+t[e[o+9]]+"-"+t[e[o+10]]+t[e[o+11]]+t[e[o+12]]+t[e[o+13]]+t[e[o+14]]+t[e[o+15]]).toLowerCase()}(s)}()),browser.runtime.sendMessage({greeting:"hello"}).then((function(e){console.log("BUNDLED: Received response: ",e)})),browser.runtime.onMessage.addListener((function(e,o,r){console.log("  UNBUNDLED: Received request: ",e)})),document.body.style.backgroundColor="purple"})();
