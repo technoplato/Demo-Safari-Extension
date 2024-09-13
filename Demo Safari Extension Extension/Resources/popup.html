@@ -1,11 +1,23 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="popup.css">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="popup.css" />
     <script type="module" src="popup.js"></script>
-</head>
-<body>
+    <script>
+      alert("hi there it loaded")
+      document.getElementById("button").addEventListener("click", function () {
+        browser.runtime
+          .sendMessage({ greeting: "goodbye" })
+          .then((response) => {
+            console.log("Received response in popup.html: ", response);
+          });
+        alert("you clicked a button, congrats!");
+      });
+    </script>
+  </head>
+  <body>
     <strong>Hello World!</strong>
-</body>
+    <button id="button">Say Hello</button>
+  </body>
 </html>
