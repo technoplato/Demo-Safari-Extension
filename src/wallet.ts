@@ -127,9 +127,9 @@ export class GhostWallet implements Wallet {
 
         this.#ghost = ghost;
 
-        // ghost.on('connect', this.#connected, this);
-        // ghost.on('disconnect', this.#disconnected, this);
-        // ghost.on('accountChanged', this.#reconnected, this);
+        ghost.on('connect', this.#connected, this);
+        ghost.on('disconnect', this.#disconnected, this);
+        ghost.on('accountChanged', this.#reconnected, this);
 
         this.#connected();
     }

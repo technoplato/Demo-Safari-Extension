@@ -32,7 +32,6 @@ export const makeGhost = (): Ghost => {
 
     let listeners: Record<string, Function[]> = {};
 
-
     return {
         publicKey: publicKey,
         connect: async (options) => {
