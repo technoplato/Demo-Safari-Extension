@@ -21,7 +21,7 @@
     "tsc": "tsc --build --verbose tsconfig.all.json",
     "package": "shx mkdir -p lib/cjs && shx echo '{ \"type\": \"commonjs\" }' > lib/cjs/package.json",
     "build": "npm run clean && npm run tsc && npm run package && npm run bundle",
-    "bundle": "webpack --mode production"
+    "bundle": "webpack --mode development"
   },
   "keywords": [],
   "author": "",

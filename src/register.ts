@@ -23,8 +23,14 @@ export function registerWallet(wallet: Wallet): void {
     }
     console.log("2")
     try {
-        (window as WalletEventsWindow).addEventListener('wallet-standard:app-ready', ({ detail: api }) =>
-            callback(api)
+        // (window as WalletEventsWindow).addEventListener('wallet-standard:app-ready', ({ detail: api }) => {
+        (window as WalletEventsWindow).addEventListener('wallet-standard:app-ready', (thing) => {
+            console.log("Hello Mike")
+            console.log
+            // console.log(api)
+            // callback(api)
+        }
+            
         );
         console.log("3")
     } catch (error) {
@@ -38,6 +44,7 @@ class RegisterWalletEvent extends Event implements WindowRegisterWalletEvent {
     readonly #detail: WindowRegisterWalletEventCallback;
 
     get detail() {
+        console.log("Detail was called")
         return this.#detail;
     }
 

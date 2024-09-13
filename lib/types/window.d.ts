@@ -27,5 +27,26 @@ export interface Ghost extends GhostEventEmitter {
     }>;
     signIn(input?: SolanaSignInInput): Promise<SolanaSignInOutput>;
 }
+export declare class RealGhost implements Ghost {
+    publicKey: PublicKey | null;
+    constructor();
+    connect(options?: {
+        onlyIfTrusted?: boolean;
+    }): Promise<{
+        publicKey: PublicKey;
+    }>;
+    disconnect(): Promise<void>;
+    signAndSendTransaction<T extends Transaction | VersionedTransaction>(transaction: T, options?: SendOptions): Promise<{
+        signature: TransactionSignature;
+    }>;
+    signTransaction<T extends Transaction | VersionedTransaction>(transaction: T): Promise<T>;
+    signAllTransactions<T extends Transaction | VersionedTransaction>(transactions: T[]): Promise<T[]>;
+    signMessage(message: Uint8Array): Promise<{
+        signature: Uint8Array;
+    }>;
+    signIn(input?: SolanaSignInInput): Promise<SolanaSignInOutput>;
+    on(event: any, listener: any, context: any): void;
+    off(event: any, listener: any, context: any): void;
+}
 export declare const makeGhost: () => Ghost;
 //# sourceMappingURL=window.d.ts.map

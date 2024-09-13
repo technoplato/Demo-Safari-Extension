@@ -26,6 +26,64 @@ export interface Ghost extends GhostEventEmitter {
     signIn(input?: SolanaSignInInput): Promise<SolanaSignInOutput>;
 }
 
+export class RealGhost implements Ghost {
+
+    public publicKey: PublicKey | null;
+
+    constructor() {
+        this.publicKey = Keypair.generate().publicKey;
+    }
+
+    async connect(options?: { onlyIfTrusted?: boolean }): Promise<{ publicKey: PublicKey }> {
+        // Simulate connection logic and return publicKey
+        this.publicKey = new PublicKey('SomeValidPublicKeyString');
+        return { publicKey: this.publicKey };
+    }
+
+    async disconnect(): Promise<void> {
+        // Simulate disconnect logic
+        this.publicKey = null;
+    }
+
+    async signAndSendTransaction<T extends Transaction | VersionedTransaction>(
+        transaction: T,
+        options?: SendOptions
+    ): Promise<{ signature: TransactionSignature }> {
+        // Simulate signing and sending transaction logic
+        const signature: TransactionSignature = 'SomeTransactionSignature';
+        return { signature };
+    }
+
+    async signTransaction<T extends Transaction | VersionedTransaction>(transaction: T): Promise<T> {
+        // Simulate signing transaction logic
+        return transaction;
+    }
+
+    async signAllTransactions<T extends Transaction | VersionedTransaction>(transactions: T[]): Promise<T[]> {
+        // Simulate signing multiple transactions
+        return transactions;
+    }
+
+    async signMessage(message: Uint8Array): Promise<{ signature: Uint8Array }> {
+        // Simulate signing a message
+        const signature = new Uint8Array([/* some byte values */]);
+        return { signature };
+    }
+
+    async signIn(input?: SolanaSignInInput): Promise<SolanaSignInOutput> {
+        throw new Error("not today buddy")
+    }
+
+    on(event: any, listener: any, context: any): void {
+        
+    }
+
+    off(event: any, listener: any, context: any): void {
+        
+    }
+
+}
+
 export const makeGhost = (): Ghost => {
 
     const publicKey = Keypair.generate().publicKey
@@ -53,14 +111,14 @@ export const makeGhost = (): Ghost => {
         signIn: async (input) => {
             throw new Error("signIn method is not implemented");
         },
-        on: <E extends keyof GhostEvent>(event: E, listener: GhostEvent[E], context?: any) => {
+        on: (event: any, listener: any, context: any) => {
             // if (!listeners[event]) {
             //     listeners[event] = [];
             // }
             // listeners[event].push(listener.bind(context));
         },
 
-        off<E extends keyof GhostEvent>(event: E, listener: GhostEvent[E], context?: any): void {
+        off: (event: any, listener: any, context: any) => {
             // if (listeners[event]) {
             //     listeners[event] = listeners[event].filter((l) => l !== listener.bind(context));
             // }

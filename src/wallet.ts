@@ -121,6 +121,9 @@ export class GhostWallet implements Wallet {
     }
 
     constructor(ghost: Ghost) {
+
+        console.log("TEEJ TEST TESSJ")
+
         if (new.target === GhostWallet) {
             Object.freeze(this);
         }
