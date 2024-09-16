@@ -77,7 +77,7 @@ export class GhostWallet implements Wallet {
         SolanaSignAndSendTransactionFeature &
         SolanaSignTransactionFeature &
         SolanaSignMessageFeature &
-        SolanaSignInFeature &
+        // SolanaSignInFeature &
         GhostFeature {
         return {
             [StandardConnect]: {
@@ -106,10 +106,10 @@ export class GhostWallet implements Wallet {
                 version: '1.0.0',
                 signMessage: this.#signMessage,
             },
-            [SolanaSignIn]: {
-                version: '1.0.0',
-                signIn: this.#signIn,
-            },
+            // [SolanaSignIn]: {
+            //     version: '1.0.0',
+            //     signIn: this.#signIn,
+            // },
             [GhostNamespace]: {
                 ghost: this.#ghost,
             },
@@ -152,13 +152,16 @@ export class GhostWallet implements Wallet {
     }
 
     #connected = () => {
+        console.log("Connect Message 1")
         const address = this.#ghost.publicKey?.toBase58();
         if (address) {
+            console.log("Connect Message 2")
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             const publicKey = this.#ghost.publicKey!.toBytes();
 
             const account = this.#account;
             if (!account || account.address !== address || !bytesEqual(account.publicKey, publicKey)) {
+                console.log("Connect Message 3")
                 this.#account = new GhostWalletAccount({ address, publicKey });
                 this.#emit('change', { accounts: this.accounts });
             }
@@ -181,7 +184,11 @@ export class GhostWallet implements Wallet {
     };
 
     #connect: StandardConnectMethod = async ({ silent } = {}) => {
+
+        console.log("Goal Connect 1")
+
         if (!this.#account) {
+            console.log("Goal Connect 2")
             await this.#ghost.connect(silent ? { onlyIfTrusted: true } : undefined);
         }
 
