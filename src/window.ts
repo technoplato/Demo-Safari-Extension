@@ -31,13 +31,55 @@ export class RealGhost implements Ghost {
     public publicKey: PublicKey | null;
 
     constructor() {
-        this.publicKey = Keypair.generate().publicKey;
+        this.publicKey = null;
+        this.setupMessageListener();
+    }
+
+    private setupMessageListener() {
+        window.addEventListener('message', (event) => {
+            if (event.source !== window) return;
+            if (event.data && event.data.source === 'my-content-script') {
+                this.handleMessage(event.data.payload);
+            }
+        });
+    }
+
+    private handleMessage(message: any) {
+        if (message.action === 'connectionConfirmed') {
+            console.log(`Received Connection Pubkey: ${message.data.publicKey}`)
+            this.publicKey = new PublicKey(message.data.publicKey);
+        }
+        // Handle other message types as needed
     }
 
     async connect(options?: { onlyIfTrusted?: boolean }): Promise<{ publicKey: PublicKey }> {
-        // Simulate connection logic and return publicKey
-        this.publicKey = new PublicKey('SomeValidPublicKeyString');
-        return { publicKey: this.publicKey };
+
+        // Send a message to the content script
+        window.postMessage(
+            {
+                source: 'my-injected-script',
+                payload: {
+                    action: 'initiateConnection',
+                    data: {
+                        message: Array.from("fdsa") // Convert Uint8Array to Array for serialization
+                    }
+                }
+            },
+            '*'
+        );
+
+        console.log("Connecting...");
+
+        // Poll for this.publicKey every second
+        while (!this.publicKey) {
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            console.log("Waiting for publicKey...");
+        }
+        
+        console.log("Connected with publicKey:", this.publicKey?.toBase58());
+
+        return { publicKey: this.publicKey! };
+        
     }
 
     async disconnect(): Promise<void> {
@@ -65,7 +107,7 @@ export class RealGhost implements Ghost {
     }
 
     async signMessage(message: Uint8Array): Promise<{ signature: Uint8Array }> {
-        // Simulate signing a message
+
         const signature = new Uint8Array([/* some byte values */]);
         return { signature };
     }
@@ -82,46 +124,4 @@ export class RealGhost implements Ghost {
         
     }
 
-}
-
-export const makeGhost = (): Ghost => {
-
-    const publicKey = Keypair.generate().publicKey
-
-    let listeners: Record<string, Function[]> = {};
-
-    return {
-        publicKey: publicKey,
-        connect: async (options) => {
-            return { publicKey: publicKey };
-        },
-        disconnect: async () => {},
-        signAndSendTransaction: async (transaction, options) => {
-            return { signature: new Uint8Array() as unknown as TransactionSignature };
-        },
-        signTransaction: async (transaction) => {
-            return transaction;
-        },
-        signAllTransactions: async (transactions) => {
-            return transactions;
-        },
-        signMessage: async (message) => {
-            return { signature: new Uint8Array() };
-        },
-        signIn: async (input) => {
-            throw new Error("signIn method is not implemented");
-        },
-        on: (event: any, listener: any, context: any) => {
-            // if (!listeners[event]) {
-            //     listeners[event] = [];
-            // }
-            // listeners[event].push(listener.bind(context));
-        },
-
-        off: (event: any, listener: any, context: any) => {
-            // if (listeners[event]) {
-            //     listeners[event] = listeners[event].filter((l) => l !== listener.bind(context));
-            // }
-        },
-    };
 }

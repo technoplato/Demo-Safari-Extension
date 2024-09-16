@@ -30,6 +30,8 @@ export interface Ghost extends GhostEventEmitter {
 export declare class RealGhost implements Ghost {
     publicKey: PublicKey | null;
     constructor();
+    private setupMessageListener;
+    private handleMessage;
     connect(options?: {
         onlyIfTrusted?: boolean;
     }): Promise<{
@@ -48,5 +50,4 @@ export declare class RealGhost implements Ghost {
     on(event: any, listener: any, context: any): void;
     off(event: any, listener: any, context: any): void;
 }
-export declare const makeGhost: () => Ghost;
 //# sourceMappingURL=window.d.ts.map

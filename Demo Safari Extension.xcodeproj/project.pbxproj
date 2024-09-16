@@ -29,6 +29,7 @@
 		40DC213E2C93B7BB0039F0A6 /* popup.css in Resources */ = {isa = PBXBuildFile; fileRef = 40DC213D2C93B7BB0039F0A6 /* popup.css */; };
 		40DC21402C93B7BB0039F0A6 /* popup.js in Resources */ = {isa = PBXBuildFile; fileRef = 40DC213F2C93B7BB0039F0A6 /* popup.js */; };
 		40DC21422C93B7BB0039F0A6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 40DC210D2C93B7BB0039F0A6 /* Assets.xcassets */; };
+		61740E402C94EEDF0078FFC6 /* inject.bundle.js in Resources */ = {isa = PBXBuildFile; fileRef = 61740E3F2C94EEDF0078FFC6 /* inject.bundle.js */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -97,6 +98,7 @@
 		40DC213D2C93B7BB0039F0A6 /* popup.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = popup.css; sourceTree = "<group>"; };
 		40DC213F2C93B7BB0039F0A6 /* popup.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = popup.js; sourceTree = "<group>"; };
 		40DC21412C93B7BB0039F0A6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		61740E3F2C94EEDF0078FFC6 /* inject.bundle.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = inject.bundle.js; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -212,6 +214,7 @@
 				40DC21332C93B7BB0039F0A6 /* images */,
 				40DC21352C93B7BB0039F0A6 /* manifest.json */,
 				40DC21372C93B7BB0039F0A6 /* background.js */,
+				61740E3F2C94EEDF0078FFC6 /* inject.bundle.js */,
 				40DC21392C93B7BB0039F0A6 /* content.js */,
 				40DC213B2C93B7BB0039F0A6 /* popup.html */,
 				40DC213D2C93B7BB0039F0A6 /* popup.css */,
@@ -379,6 +382,7 @@
 				40DC213C2C93B7BB0039F0A6 /* popup.html in Resources */,
 				40DC21342C93B7BB0039F0A6 /* images in Resources */,
 				40DC21362C93B7BB0039F0A6 /* manifest.json in Resources */,
+				61740E402C94EEDF0078FFC6 /* inject.bundle.js in Resources */,
 				40DC21322C93B7BB0039F0A6 /* _locales in Resources */,
 				40DC213A2C93B7BB0039F0A6 /* content.js in Resources */,
 				40DC21402C93B7BB0039F0A6 /* popup.js in Resources */,
@@ -595,7 +599,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4EC72DECN9;
+				DEVELOPMENT_TEAM = KW8RLKUW3C;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Demo Safari Extension Extension/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Demo Safari Extension Extension";
@@ -625,7 +629,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4EC72DECN9;
+				DEVELOPMENT_TEAM = KW8RLKUW3C;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Demo Safari Extension Extension/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Demo Safari Extension Extension";

@@ -11,6 +11,19 @@ import os.log
 class SafariWebExtensionHandler: NSObject, NSExtensionRequestHandling {
 
     func beginRequest(with context: NSExtensionContext) {
+        
+        Task {
+            
+            let urlString = "https://b097-2600-1700-75c1-130-d860-67d6-ca2a-8ecf.ngrok-free.app/api/start"
+            guard let url = URL(string: urlString) else {
+                fatalError()
+            }
+
+            // Perform the GET request
+            let (data, response) = try await URLSession.shared.data(from: url)
+
+        }
+        
         let request = context.inputItems.first as? NSExtensionItem
 
         let profile: UUID?

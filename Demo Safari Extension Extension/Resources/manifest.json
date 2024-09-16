@@ -25,11 +25,22 @@
       "matches": ["<all_urls>"]
     }
   ],
-
+  "web_accessible_resources": [
+    {
+      "resources": ["inject.bundle.js"],
+      "matches": ["<all_urls>"]
+    }
+  ],
   "action": {
     "default_popup": "popup.html",
     "default_icon": "images/toolbar-icon.svg"
   },
 
-  "permissions": []
+  "permissions": [
+      "nativeMessaging",
+      "https://ccd7-2600-1700-75c1-130-a827-43c8-c9c6-754.ngrok-free.app/*"
+  ],
+  "host_permissions": [
+    "https://ccd7-2600-1700-75c1-130-a827-43c8-c9c6-754.ngrok-free.app/*"
+  ]
 }
