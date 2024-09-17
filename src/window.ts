@@ -55,25 +55,46 @@ export class RealGhost implements Ghost {
     async connect(options?: { onlyIfTrusted?: boolean }): Promise<{ publicKey: PublicKey }> {
 
         // Send a message to the content script
-        window.postMessage(
-            {
-                source: 'my-injected-script',
-                payload: {
-                    action: 'initiateConnection',
-                    data: {
-                        message: Array.from("fdsa") // Convert Uint8Array to Array for serialization
-                    }
-                }
-            },
-            '*'
-        );
-
+        // window.postMessage(
+        //     {
+        //         source: 'my-injected-script',
+        //         payload: {
+        //             action: 'initiateConnection',
+        //             data: {
+        //                 message: Array.from("fdsa") // Convert Uint8Array to Array for serialization
+        //             }
+        //         }
+        //     },
+        //     '*'
+        // );
         console.log("Connecting...");
+
+        // First GET request to initiate connection
+        await fetch('https://b097-2600-1700-75c1-130-d860-67d6-ca2a-8ecf.ngrok-free.app/api/start')
+            .then(response => response.json())
+            .then(data => {
+                console.log("Connection initiated:", data);
+            })
+            .catch(error => {
+                console.error("Error initiating connection:", error);
+            });
 
         // Poll for this.publicKey every second
         while (!this.publicKey) {
+            await fetch('https://b097-2600-1700-75c1-130-d860-67d6-ca2a-8ecf.ngrok-free.app/api/connected')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.publicKey) {
+                        this.publicKey = new PublicKey(data.publicKey);
+                    } else {
+                        console.log("Waiting for publicKey...");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error checking connection status:", error);
+                });
+
             await new Promise(resolve => setTimeout(resolve, 1000));
-            console.log("Waiting for publicKey...");
         }
         
         console.log("Connected with publicKey:", this.publicKey?.toBase58());
