@@ -109,3 +109,21 @@ browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
 });
 
 document.body.style.backgroundColor = "purple";
+
+
+
+// window.addEventListener('message', function(event) {
+//   // Only process messages from the same window (page context)
+//   if (event.source !== window) return;
+
+//   // Check if the message is from your injected script
+//   if (event.data && event.data.source === 'my-injected-script') {
+//     const message = event.data.payload;
+//     console.log('Content script received message from injected script:', message);
+
+//     // Handle the 'signMessage' action
+//     if (message.action === 'initiateConnection') {
+//       completion(["hello world", "hello teej"]);
+//     }
+//   }
+// });
