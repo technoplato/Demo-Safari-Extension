@@ -70,29 +70,29 @@ export class RealGhost implements Ghost {
         console.log("Connecting... new");
 
         // First GET request to initiate connection
-        await fetch('https://b097-2600-1700-75c1-130-d860-67d6-ca2a-8ecf.ngrok-free.app/api/start')
-            .then(response => response.json())
-            .then(data => {
-                console.log("Connection initiated:", data);
-            })
-            .catch(error => {
-                console.error("Error initiating connection:", error);
-            });
+        // await fetch('https://b097-2600-1700-75c1-130-d860-67d6-ca2a-8ecf.ngrok-free.app/api/start')
+        //     .then(response => response.json())
+        //     .then(data => {
+        //         console.log("Connection initiated:", data);
+        //     })
+        //     .catch(error => {
+        //         console.error("Error initiating connection:", error);
+        //     });
 
         // Poll for this.publicKey every second
         while (!this.publicKey) {
-            await fetch('https://b097-2600-1700-75c1-130-d860-67d6-ca2a-8ecf.ngrok-free.app/api/connected')
-                .then(response => response.json())
-                .then(data => {
-                    if (data.publicKey) {
-                        this.publicKey = new PublicKey(data.publicKey);
-                    } else {
-                        console.log("Waiting for publicKey...");
-                    }
-                })
-                .catch(error => {
-                    console.error("Error checking connection status:", error);
-                });
+            // await fetch('https://b097-2600-1700-75c1-130-d860-67d6-ca2a-8ecf.ngrok-free.app/api/connected')
+            //     .then(response => response.json())
+            //     .then(data => {
+            //         if (data.publicKey) {
+            //             this.publicKey = new PublicKey(data.publicKey);
+            //         } else {
+            //             console.log("Waiting for publicKey...");
+            //         }
+            //     })
+            //     .catch(error => {
+            //         console.error("Error checking connection status:", error);
+            //     });
 
             await new Promise(resolve => setTimeout(resolve, 1000));
         }
