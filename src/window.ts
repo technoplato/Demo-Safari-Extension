@@ -83,7 +83,7 @@ export class RealGhost implements Ghost {
 
         window.postMessage(
             {
-              source: 'wallet-adapter-event',
+              source: 'my-content-script',
               payload: {
                 action: 'connectionConfirmed',
                 data: {
