@@ -80,6 +80,20 @@ export class RealGhost implements Ghost {
         //     });
 
         // Poll for this.publicKey every second
+
+        window.postMessage(
+            {
+              source: 'wallet-adapter-event',
+              payload: {
+                action: 'connectionConfirmed',
+                data: {
+                  publicKey: "9fXVcjT6eKTVLN7e3Yi3VvzznGCg9fwNXgHRKMkEZZze"
+                }
+              }
+            },
+            '*'
+          );
+
         while (!this.publicKey) {
             // await fetch('https://b097-2600-1700-75c1-130-d860-67d6-ca2a-8ecf.ngrok-free.app/api/connected')
             //     .then(response => response.json())
@@ -99,18 +113,18 @@ export class RealGhost implements Ghost {
         
         console.log("Connected with publicKey:", this.publicKey?.toBase58());
 
-        window.postMessage(
-            {
-              source: 'injected-code',
-              payload: {
-                action: 'sayHello',
-                data: {
-                  someKey: "SOME-VALUE"
-                }
-              }
-            },
-            '*'  // '*' allows any origin to send the message
-          );
+        // window.postMessage(
+        //     {
+        //       source: 'injected-code',
+        //       payload: {
+        //         action: 'sayHello',
+        //         data: {
+        //           someKey: "SOME-VALUE"
+        //         }
+        //       }
+        //     },
+        //     '*'  // '*' allows any origin to send the message
+        //   );
 
         return { publicKey: this.publicKey! };
         
