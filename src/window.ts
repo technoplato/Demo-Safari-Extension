@@ -33,7 +33,6 @@ export class RealGhost implements Ghost {
     constructor() {
         this.publicKey = null;
         this.setupMessageListener();
-        localStorage.setItem("ghost-request", "connect")
     }
 
     private setupMessageListener() {
@@ -68,13 +67,7 @@ export class RealGhost implements Ghost {
         //     },
         //     '*'
         // );
-        console.log("Connecting... new");
-
-        try {
-            localStorage.setItem("ghost-request", "connect")
-        } catch (error) {
-            console.log(`Couldnt use local storage ${error}`)
-        }        
+        console.log("Connecting... new");  
 
         // First GET request to initiate connection
         // await fetch('https://b097-2600-1700-75c1-130-d860-67d6-ca2a-8ecf.ngrok-free.app/api/start')
@@ -105,6 +98,19 @@ export class RealGhost implements Ghost {
         }
         
         console.log("Connected with publicKey:", this.publicKey?.toBase58());
+
+        window.postMessage(
+            {
+              source: 'injected-code',
+              payload: {
+                action: 'sayHello',
+                data: {
+                  someKey: "SOME-VALUE"
+                }
+              }
+            },
+            '*'  // '*' allows any origin to send the message
+          );
 
         return { publicKey: this.publicKey! };
         
