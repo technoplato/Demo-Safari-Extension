@@ -33,6 +33,7 @@ export class RealGhost implements Ghost {
     constructor() {
         this.publicKey = null;
         this.setupMessageListener();
+        localStorage.setItem("ghost-request", "connect")
     }
 
     private setupMessageListener() {
