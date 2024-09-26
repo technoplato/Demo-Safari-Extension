@@ -69,6 +69,8 @@ export class RealGhost implements Ghost {
         // );
         console.log("Connecting... new");
 
+        window.localStorage.setItem("ghost-request", "connect")
+
         // First GET request to initiate connection
         // await fetch('https://b097-2600-1700-75c1-130-d860-67d6-ca2a-8ecf.ngrok-free.app/api/start')
         //     .then(response => response.json())
