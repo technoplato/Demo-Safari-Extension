@@ -9,5 +9,5 @@ export const signTransaction = ( transactionString: string, keypairString: strin
     const signedTransactionBuffer = transaction.serialize()
     const base64Transaction = Buffer.from(signedTransactionBuffer).toString('base64');
     return base64Transaction
-    
+
 }
