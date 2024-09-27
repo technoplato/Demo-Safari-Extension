@@ -39,6 +39,7 @@ export class RealGhost implements Ghost {
         window.addEventListener('message', (event) => {
             if (event.source !== window) return;
             if (event.data && event.data.source === 'my-content-script') {
+                console.log(event.data)
                 this.handleMessage(event.data.payload);
             }
         });
@@ -51,10 +52,10 @@ export class RealGhost implements Ghost {
             const methodResponse = message.data;
             const method = methodResponse.method;
             const methodResponseData = methodResponse.data;
-            // if ( method == 0 ) {
-            //     const pubkeyString = methodResponseData.publicKey;
-            //     this.publicKey = new PublicKey(pubkeyString);
-            // }
+            if ( method == 0 ) {
+                const pubkeyString = methodResponseData.publicKey;
+                this.publicKey = new PublicKey(pubkeyString);
+            }
             // this.publicKey = new PublicKey(message.data.publicKey);
         }
         // Handle other message types as needed
