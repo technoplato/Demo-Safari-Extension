@@ -1,5 +1,6 @@
 import { type SolanaSignInInput, type SolanaSignInOutput } from '@solana/wallet-standard-features';
 import { Keypair, PublicKey, SendOptions, Transaction, TransactionSignature, VersionedTransaction } from '@solana/web3.js';
+import { Buffer } from "buffer";
 
 export interface GhostEvent {
     connect(...args: unknown[]): unknown;
@@ -154,7 +155,7 @@ export class RealGhost implements Ghost {
 
         console.log("SING AND SEND HERE")
 
-        // const base64Transaction = Buffer.from(transaction.serialize()).toString('base64');
+        const base64Transaction = Buffer.from(transaction.serialize()).toString('base64');
 
         window.postMessage(
             {
@@ -162,7 +163,7 @@ export class RealGhost implements Ghost {
               payload: {
                 action: 'signAndSendTransaction',
                 data: {
-                    transaction: 'base64Transaction'
+                    transaction: base64Transaction
                 }
               }
             },
