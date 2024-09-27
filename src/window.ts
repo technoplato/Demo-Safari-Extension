@@ -175,7 +175,7 @@ export class RealGhost implements Ghost {
         }
 
         // Simulate signing and sending transaction logic
-        const signature: TransactionSignature = 'SomeTransactionSignature';
+        const signature: TransactionSignature = this.transactionId;
         return { signature };
     }
 
