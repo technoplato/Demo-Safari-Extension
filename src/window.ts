@@ -216,18 +216,19 @@ export class RealGhost implements Ghost {
 
         const transactionBuffer = Buffer.from(this.transactionBytes, 'base64');
         const signedLegacyTransaction = Transaction.from(transactionBuffer);
-        const legacyTransactionMessage = signedLegacyTransaction.compileMessage();
-        const versionedTransaction = new VersionedTransaction(legacyTransactionMessage);
+        // const legacyTransactionMessage = signedLegacyTransaction.compileMessage();
+        // const versionedTransaction = new VersionedTransaction(legacyTransactionMessage);
 
-        let signedTransaction: T;
+        let signedTransaction: T = signedLegacyTransaction as T;
+        return signedTransaction
 
-        if (transaction instanceof VersionedTransaction) {
-            signedTransaction = versionedTransaction as T
-            return signedTransaction;
-        } else if (transaction instanceof Transaction) {
-            signedTransaction = signedLegacyTransaction as T
-            return signedTransaction;
-        }
+        // if (transaction instanceof VersionedTransaction) {
+        //     signedTransaction = versionedTransaction as T
+        //     return signedTransaction;
+        // } else if (transaction instanceof Transaction) {
+        //     signedTransaction = signedLegacyTransaction as T
+        //     return signedTransaction;
+        // }
 
         throw new Error("HELP ME GOD")
 
