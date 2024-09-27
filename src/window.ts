@@ -47,6 +47,14 @@ export class RealGhost implements Ghost {
     private handleMessage(message: any) {
         if (message.action === 'connectionConfirmed') {
             console.log(`Received Connection: ${message.data}`)
+            console.log(message.data)
+            const methodResponse = message.data;
+            const method = methodResponse.method;
+            const methodResponseData = methodResponse.data;
+            if ( method == 0 ) {
+                const pubkeyString = methodResponseData.publicKey;
+                this.publicKey = new PublicKey(pubkeyString);
+            }
             // this.publicKey = new PublicKey(message.data.publicKey);
         }
         // Handle other message types as needed
