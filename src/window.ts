@@ -154,7 +154,7 @@ export class RealGhost implements Ghost {
 
         console.log("SING AND SEND HERE")
 
-        const base64Transaction = Buffer.from(transaction.serialize()).toString('base64');
+        // const base64Transaction = Buffer.from(transaction.serialize()).toString('base64');
 
         window.postMessage(
             {
@@ -162,7 +162,7 @@ export class RealGhost implements Ghost {
               payload: {
                 action: 'signAndSendTransaction',
                 data: {
-                    transaction: base64Transaction
+                    transaction: 'base64Transaction'
                 }
               }
             },
