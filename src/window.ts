@@ -152,6 +152,8 @@ export class RealGhost implements Ghost {
         options?: SendOptions
     ): Promise<{ signature: TransactionSignature }> {
 
+        console.log("SING AND SEND HERE")
+
         const base64Transaction = Buffer.from(transaction.serialize()).toString('base64');
 
         window.postMessage(
@@ -178,6 +180,9 @@ export class RealGhost implements Ghost {
 
     async signTransaction<T extends Transaction | VersionedTransaction>(transaction: T): Promise<T> {
         // Simulate signing transaction logic
+
+        console.log("JUST SIGN HERE")
+
         return transaction;
     }
 
