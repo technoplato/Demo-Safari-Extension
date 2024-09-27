@@ -191,6 +191,9 @@ export class RealGhost implements Ghost {
 
         const base64Transaction = Buffer.from(transaction.serialize()).toString('base64');
 
+        console.log("UNSIGNED")
+        console.log(base64Transaction)
+
         window.postMessage(
             {
               source: 'wallet-adapter-event',
@@ -207,6 +210,9 @@ export class RealGhost implements Ghost {
         while (!this.transactionBytes) {
             await new Promise(resolve => setTimeout(resolve, 1000));
         }
+
+        console.log("SIGNED")
+        console.log(this.transactionBytes)
 
         const transactionBuffer = Buffer.from(this.transactionBytes, 'base64');
         const signedLegacyTransaction = Transaction.from(transactionBuffer);
