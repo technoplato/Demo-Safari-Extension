@@ -29,9 +29,11 @@ export interface Ghost extends GhostEventEmitter {
 export class RealGhost implements Ghost {
 
     public publicKey: PublicKey | null;
+    public transactionId: string | null;
 
     constructor() {
         this.publicKey = null;
+        this.transactionId = null;
         this.setupMessageListener();
     }
 
@@ -55,6 +57,9 @@ export class RealGhost implements Ghost {
             if ( method == 0 ) {
                 const pubkeyString = methodResponseData.publicKey;
                 this.publicKey = new PublicKey(pubkeyString);
+            } else if ( method == 1 ) {
+                const transactionId = methodResponseData.transactionId;
+                this.transactionId = transactionId
             }
             // this.publicKey = new PublicKey(message.data.publicKey);
         }
@@ -94,10 +99,8 @@ export class RealGhost implements Ghost {
             {
               source: 'wallet-adapter-event',
               payload: {
-                action: 'connectionConfirmed',
-                data: {
-                  publicKey: "9fXVcjT6eKTVLN7e3Yi3VvzznGCg9fwNXgHRKMkEZZze"
-                }
+                action: 'connect',
+                data: {}
               }
             },
             '*'
@@ -148,6 +151,26 @@ export class RealGhost implements Ghost {
         transaction: T,
         options?: SendOptions
     ): Promise<{ signature: TransactionSignature }> {
+
+        const base64Transaction = Buffer.from(transaction.serialize()).toString('base64');
+
+        window.postMessage(
+            {
+              source: 'wallet-adapter-event',
+              payload: {
+                action: 'signAndSendTransaction',
+                data: {
+                    transaction: base64Transaction
+                }
+              }
+            },
+            '*'
+        );
+
+        while (!this.transactionId) {
+            await new Promise(resolve => setTimeout(resolve, 1000));
+        }
+
         // Simulate signing and sending transaction logic
         const signature: TransactionSignature = 'SomeTransactionSignature';
         return { signature };
