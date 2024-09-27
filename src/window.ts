@@ -1,5 +1,5 @@
 import { type SolanaSignInInput, type SolanaSignInOutput } from '@solana/wallet-standard-features';
-import { Keypair, PublicKey, SendOptions, Transaction, TransactionSignature, VersionedTransaction } from '@solana/web3.js';
+import { Keypair, MessageV0, PublicKey, SendOptions, Transaction, TransactionSignature, VersionedTransaction } from '@solana/web3.js';
 import { Buffer } from "buffer";
 
 export interface GhostEvent {
@@ -31,10 +31,12 @@ export class RealGhost implements Ghost {
 
     public publicKey: PublicKey | null;
     public transactionId: string | null;
+    public transactionBytes: string | null;
 
     constructor() {
         this.publicKey = null;
         this.transactionId = null;
+        this.transactionBytes = null;
         this.setupMessageListener();
     }
 
@@ -61,6 +63,9 @@ export class RealGhost implements Ghost {
             } else if ( method == 1 ) {
                 const transactionId = methodResponseData.transactionId;
                 this.transactionId = transactionId
+            } else if ( method == 2 ) {
+                const transactionBytes = methodResponseData.transactionBytes;
+                this.transactionBytes = transactionBytes;
             }
             // this.publicKey = new PublicKey(message.data.publicKey);
         }
@@ -182,12 +187,50 @@ export class RealGhost implements Ghost {
     async signTransaction<T extends Transaction | VersionedTransaction>(transaction: T): Promise<T> {
         // Simulate signing transaction logic
 
-        console.log("JUST SIGN HERE")
+        console.log("Sign Single Transactions Requested")
 
-        return transaction;
+        const base64Transaction = Buffer.from(transaction.serialize()).toString('base64');
+
+        window.postMessage(
+            {
+              source: 'wallet-adapter-event',
+              payload: {
+                action: 'signTransaction',
+                data: {
+                    transaction: base64Transaction
+                }
+              }
+            },
+            '*'
+        );
+
+        while (!this.transactionBytes) {
+            await new Promise(resolve => setTimeout(resolve, 1000));
+        }
+
+        const transactionBuffer = Buffer.from(this.transactionBytes, 'base64');
+        const signedLegacyTransaction = Transaction.from(transactionBuffer);
+        const legacyTransactionMessage = signedLegacyTransaction.compileMessage();
+        const versionedTransaction = new VersionedTransaction(legacyTransactionMessage);
+
+        let signedTransaction: T;
+
+        if (transaction instanceof VersionedTransaction) {
+            signedTransaction = versionedTransaction as T
+            return signedTransaction;
+        } else if (transaction instanceof Transaction) {
+            signedTransaction = signedLegacyTransaction as T
+            return signedTransaction;
+        }
+
+        throw new Error("HELP ME GOD")
+
     }
 
     async signAllTransactions<T extends Transaction | VersionedTransaction>(transactions: T[]): Promise<T[]> {
+
+        console.log("Sign All Transactions Requested")
+
         // Simulate signing multiple transactions
         return transactions;
     }

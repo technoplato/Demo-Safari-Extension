@@ -30,6 +30,7 @@ export interface Ghost extends GhostEventEmitter {
 export declare class RealGhost implements Ghost {
     publicKey: PublicKey | null;
     transactionId: string | null;
+    transactionBytes: string | null;
     constructor();
     private setupMessageListener;
     private handleMessage;
