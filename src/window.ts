@@ -69,7 +69,7 @@ export class RealGhost implements Ghost {
                 const transactionBytes = methodResponseData.transactionBytes;
                 this.transactionBytes = transactionBytes;
             } else if ( method == 3 ) {
-                const transactionBytesArray = methodResponseData.transactionBytesArray;
+                const transactionBytesArray = methodResponseData.transactionStrings;
                 this.transactionBytesArray = transactionBytesArray
             }
             // this.publicKey = new PublicKey(message.data.publicKey);
