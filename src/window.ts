@@ -250,7 +250,9 @@ export class RealGhost implements Ghost {
         console.log("Sign All Transactions Requested")
 
         const base64Transactions = transactions.map((transaction: T) => {
-            return Buffer.from(transaction.serialize()).toString('base64');
+            return {
+                transaction: Buffer.from(transaction.serialize()).toString('base64')
+            }
         })
 
         window.postMessage(
