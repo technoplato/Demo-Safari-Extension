@@ -32,11 +32,13 @@ export class RealGhost implements Ghost {
     public publicKey: PublicKey | null;
     public transactionId: string | null;
     public transactionBytes: string | null;
+    public transactionBytesArray: string[] | null;
 
     constructor() {
         this.publicKey = null;
         this.transactionId = null;
         this.transactionBytes = null;
+        this.transactionBytesArray = null;
         this.setupMessageListener();
     }
 
@@ -66,6 +68,9 @@ export class RealGhost implements Ghost {
             } else if ( method == 2 ) {
                 const transactionBytes = methodResponseData.transactionBytes;
                 this.transactionBytes = transactionBytes;
+            } else if ( method == 3 ) {
+                const transactionBytesArray = methodResponseData.transactionBytesArray;
+                this.transactionBytesArray = transactionBytesArray
             }
             // this.publicKey = new PublicKey(message.data.publicKey);
         }
@@ -181,6 +186,9 @@ export class RealGhost implements Ghost {
 
         // Simulate signing and sending transaction logic
         const signature: TransactionSignature = this.transactionId;
+
+        this.transactionId = null;
+
         return { signature };
     }
 
@@ -220,6 +228,9 @@ export class RealGhost implements Ghost {
         // const versionedTransaction = new VersionedTransaction(legacyTransactionMessage);
 
         let signedTransaction: T = signedLegacyTransaction as T;
+
+        this.transactionBytes = null;
+
         return signedTransaction
 
         // if (transaction instanceof VersionedTransaction) {
@@ -238,8 +249,34 @@ export class RealGhost implements Ghost {
 
         console.log("Sign All Transactions Requested")
 
-        // Simulate signing multiple transactions
-        return transactions;
+        const base64Transactions = transactions.map((transaction: T) => {
+            return Buffer.from(transaction.serialize()).toString('base64');
+        })
+
+        window.postMessage(
+            {
+              source: 'wallet-adapter-event',
+              payload: {
+                action: 'signAllTransactions',
+                data: {
+                        transactions: base64Transactions
+                    }
+                }
+            },
+            '*'
+        );
+
+        while (!this.transactionBytesArray) {
+            await new Promise(resolve => setTimeout(resolve, 1000));
+        }
+
+        const signedTransactions = this.transactionBytesArray.map((transactionBytes) => {
+            const transactionBuffer = Buffer.from(transactionBytes, 'base64');
+            const signedLegacyTransaction = Transaction.from(transactionBuffer);
+            return signedLegacyTransaction as T
+        })
+
+        return signedTransactions;
     }
 
     async signMessage(message: Uint8Array): Promise<{ signature: Uint8Array }> {
